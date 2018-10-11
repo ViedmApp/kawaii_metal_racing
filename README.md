@@ -1,1 +1,1 @@
-# kawaii_metal_racing
+# Kawaii-Metal Racing
