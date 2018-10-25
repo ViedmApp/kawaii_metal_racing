@@ -4,6 +4,7 @@ GameObject::GameObject(){}
 
 GameObject::GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld)
 {
+    this->world= dynamicsWorld;
     this->mass = masa;
     this->position = startPosition;
     this->rotation = startRotation;
@@ -12,15 +13,15 @@ GameObject::GameObject(const char* path, GLuint shaderprog, btScalar masa, btVec
     }
     btTransform startTransform;
     startTransform.setIdentity();
-    
-    bool isDynamic = (this->mass != 0.f); 
+
+    bool isDynamic = (this->mass != 0.f);
     btVector3 localInertia(0, 0, 0);
     if (isDynamic)
         coll->calculateLocalInertia(this->mass, localInertia);
 
     startTransform.setOrigin(this->position);
     startTransform.setRotation(this->rotation);
-    
+
     btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(this->mass, myMotionState, coll, localInertia);
     this->rigidBody = new btRigidBody(rbInfo);
@@ -45,18 +46,18 @@ bool GameObject::load_mesh (const char* file_name, GLuint& vao, int& vert_no) {
     printf ("  %i materials\n", scene->mNumMaterials);
     printf ("  %i meshes\n", scene->mNumMeshes);
     printf ("  %i textures\n", scene->mNumTextures);
-    
+
     const aiMesh* mesh = scene->mMeshes[0];
     printf ("    %i vertices in %s\n", mesh->mNumVertices, file_name);
-    
+
     vert_no = mesh->mNumVertices;
 
     glGenVertexArrays (1, &vao);
     glBindVertexArray (vao);
-    
-    GLfloat* points = NULL;                                 
-    GLfloat* normals = NULL;                                
-    GLfloat* texcoords = NULL;                              
+
+    GLfloat* points = NULL;
+    GLfloat* normals = NULL;
+    GLfloat* texcoords = NULL;
 
     if (mesh->HasPositions ()) {
         points = (GLfloat*)malloc (vert_no * 3 * sizeof (GLfloat));
@@ -84,7 +85,7 @@ bool GameObject::load_mesh (const char* file_name, GLuint& vao, int& vert_no) {
             texcoords[i * 2 + 1] = (GLfloat)vt->y;
         }
     }
-    
+
     if (mesh->HasPositions ()) {
         GLuint vbo;
         glGenBuffers (1, &vbo);
@@ -130,10 +131,10 @@ bool GameObject::load_mesh (const char* file_name, GLuint& vao, int& vert_no) {
     if (mesh->HasTangentsAndBitangents ()) {
         // NB: could store/print tangents here
     }
-    
+
     aiReleaseImport (scene);
     printf ("mesh loaded\n");
-    
+
     return true;
 }
 
@@ -182,9 +183,17 @@ void GameObject::setModelMatrix(glm::mat4 model){
     this->modelMatrix = model;
 }
 
+void GameObject::setWorld(btDiscreteDynamicsWorld* world){
+    this->world = world;
+}
+
+btDiscreteDynamicsWorld* GameObject::getWorld()
+{
+    return this->world;
+}
+
 void GameObject::draw(int matloc){
         glUniformMatrix4fv(matloc, 1, GL_FALSE, &this->modelMatrix[0][0]);
         glBindVertexArray(this->getVao());
         glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
 }
-

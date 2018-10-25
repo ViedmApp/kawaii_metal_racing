@@ -122,7 +122,7 @@ int main(int argc, char* argv[]){
 
 	//Creacion de objetos del espacio (RigidBodys)
 	btCollisionShape* ballShape = new btSphereShape(btScalar(1.));
-	Vehicle *ball = new Vehicle((char*)"mallas/ball.obj",shader_programme,btScalar(0),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	Vehicle *ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(0),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
 
 

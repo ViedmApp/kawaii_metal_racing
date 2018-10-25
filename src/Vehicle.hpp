@@ -10,13 +10,12 @@
 
 
 class Vehicle: public GameObject{
-private:
-   btDiscreteDynamicsWorld* world;
 
 protected:
  btRaycastVehicle* vehicle;
 bool isAlive;
 float health;
+bool turned;
 public:
 
     Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld);
@@ -28,7 +27,7 @@ public:
 
 
     btVector3 dirr;
-
+    void initialize();
 
     /*virtual void initialize(btDiscreteDynamicsWorld* world) = 0;
     virtual void updatePhysics() = 0;
@@ -46,15 +45,24 @@ public:
     float getHealth();
     bool getIsAlive();
      bool getBrake();
+      bool getTurned();
     btRaycastVehicle* getVehicle();
-    btDiscreteDynamicsWorld* getWorld();
-
+    void accelerate();
+    void brake();
+    void reverse();
+    void turnLeft();
+    void turnRight();
+    void updatePhysics();
+    void fire();
+    void setTurned(bool turn);    //void spawn();
+    //void despawn(btDiscreteDynamicsWorld *world);
 
     void setHealth(float vida);
     void setIsAlive(bool isAliv);
     void setBrake(bool brake);
     void setVehicle(btRaycastVehicle* vehicle);
-    void setWorld(btDiscreteDynamicsWorld* world);
+    //void draw(GLuint model_mat_location);
+
 
 
 };
