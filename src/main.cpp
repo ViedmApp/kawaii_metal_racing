@@ -29,7 +29,7 @@
 #include <iostream>
 #include "gl_utils.h"
 #include "tools.h"
-#include "GameObject.hpp"
+#include "Vehicle.hpp"
 #include "GLDebugDrawer.hpp"
 #include <bullet/btBulletDynamicsCommon.h>
 
@@ -122,18 +122,18 @@ int main(int argc, char* argv[]){
 
 	//Creacion de objetos del espacio (RigidBodys)
 	btCollisionShape* ballShape = new btSphereShape(btScalar(1.));
-	GameObject *ball = new GameObject((char*)"mallas/ball.obj",shader_programme,btScalar(0),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	Vehicle *ball = new Vehicle((char*)"mallas/ball.obj",shader_programme,btScalar(0),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
-	
-	
+
+
     glm::mat4 aux;
-    GLDebugDrawer* debug = new GLDebugDrawer();    
+    GLDebugDrawer* debug = new GLDebugDrawer();
 	debug->setDebugMode(btIDebugDraw::DBG_DrawWireframe );
 	debug->setView(&view);
 	debug->setProj(&projection);
 	dynamicsWorld->setDebugDrawer(debug);
 	while (!glfwWindowShouldClose(g_window)){
-	       
+
 	       // Se aumenta en un paso la simulacion (calculo del dt)
 
 	       float currentFrame = glfwGetTime();
@@ -166,11 +166,11 @@ int main(int argc, char* argv[]){
 	       ball->setModelMatrix(aux);
 	       ball->draw(model_mat_location);
 
-	        
+
 	       glfwSwapBuffers(g_window);
 	       glfwPollEvents();
 	   }
-	   glfwTerminate();    
+	   glfwTerminate();
 	   return 0;
 }
 
@@ -188,7 +188,7 @@ void processInput(GLFWwindow *window){
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-    	bodyBall -> applyForce(btVector3(500.,0,0),btVector3(1,0,0));	 
+    	bodyBall -> applyForce(btVector3(500.,0,0),btVector3(1,0,0));
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     	bodyBall -> applyForce(btVector3(-500.,0,0),btVector3(1,0,0));
 }
