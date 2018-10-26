@@ -67,6 +67,7 @@ float lastFrame = 0.0f;
 
 btRigidBody* bodyBall;
 btDiscreteDynamicsWorld* dynamicsWorld;
+Vehicle *ball;
 
 
 int main(int argc, char* argv[]){
@@ -90,12 +91,6 @@ int main(int argc, char* argv[]){
 	GLuint shader_programme = create_programme_from_files (
 		VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE
 	);
-	if (argc != 2)
-	{
-		printf("Ejecutar como ./bin/prog N\n");
-		return 1;
-	}
-	int N = atoi(argv[1]);
     glm::mat4 projection = glm::perspective(glm::radians(fov), (float)g_gl_width / (float)g_gl_height, 0.1f, 100.0f);
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
@@ -121,9 +116,13 @@ int main(int argc, char* argv[]){
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	//Creacion de objetos del espacio (RigidBodys)
-	btCollisionShape* ballShape = new btSphereShape(btScalar(1.));
-	Vehicle *ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(0),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	btCollisionShape* ballShape = new btSphereShape(btScalar(1.5));
+	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(500),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
+
+	btCollisionShape* boxShape = new btBoxShape(btVector3(5,0.2,5));
+	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-5,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	btRigidBody* pisoShape = ball->getRigidBody();
 
 
     glm::mat4 aux;
@@ -157,14 +156,9 @@ int main(int argc, char* argv[]){
 	       view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	        glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
 
-	       btTransform trans;
-
-
-	       bodyBall->getMotionState()->getWorldTransform(trans); // Se guarda la informacion de transformaciones de bodyBall en trans
-	       // Y se obtiene la matrix model directamente desde bullet
-	       trans.getOpenGLMatrix(&aux[0][0]);
-	       ball->setModelMatrix(aux);
+	   	   piso -> draw(model_mat_location);
 	       ball->draw(model_mat_location);
+
 
 
 	       glfwSwapBuffers(g_window);
@@ -190,7 +184,7 @@ void processInput(GLFWwindow *window){
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
     	bodyBall -> applyForce(btVector3(500.,0,0),btVector3(1,0,0));
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    	bodyBall -> applyForce(btVector3(-500.,0,0),btVector3(1,0,0));
+    	ball -> accelerate();
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){

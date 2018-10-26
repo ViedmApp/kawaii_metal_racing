@@ -193,7 +193,11 @@ btDiscreteDynamicsWorld* GameObject::getWorld()
 }
 
 void GameObject::draw(int matloc){
-        glUniformMatrix4fv(matloc, 1, GL_FALSE, &this->modelMatrix[0][0]);
-        glBindVertexArray(this->getVao());
-        glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
+    btTransform trans;
+    this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
+    trans.getOpenGLMatrix(&modelMatrix[0][0]);
+    this -> setModelMatrix(this->modelMatrix);
+    glUniformMatrix4fv(matloc, 1, GL_FALSE, &this->modelMatrix[0][0]);
+    glBindVertexArray(this->getVao());
+    glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
 }

@@ -12,10 +12,12 @@
 class Vehicle: public GameObject{
 
 protected:
- btRaycastVehicle* vehicle;
-bool isAlive;
-float health;
-bool turned;
+    GLuint wheel_vao;
+    int wheel_num_verts;
+    btRaycastVehicle* vehicle;
+    bool isAlive;
+    float health;
+    bool turned;
 public:
 
     Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld);
@@ -44,8 +46,8 @@ public:
 */
     float getHealth();
     bool getIsAlive();
-     bool getBrake();
-      bool getTurned();
+    bool getBrake();
+    bool getTurned();
     btRaycastVehicle* getVehicle();
     void accelerate();
     void brake();
@@ -61,7 +63,10 @@ public:
     void setIsAlive(bool isAliv);
     void setBrake(bool brake);
     void setVehicle(btRaycastVehicle* vehicle);
-    //void draw(GLuint model_mat_location);
+    void draw(GLuint model_mat_location);
+
+    GLuint getWheelVao();
+    int getWheelNumVerts();
 
 
 

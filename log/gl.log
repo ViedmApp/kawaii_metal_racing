@@ -1,6 +1,6 @@
-GL_LOG_FILE log. local time Thu Oct 25 18:26:15 2018
+GL_LOG_FILE log. local time Fri Oct 26 08:44:11 2018
 
-starting GLFW 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm sharedrenderer: Mesa DRI Intel(R) HD Graphics 520 (Skylake GT2) 
+starting GLFW 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm sharedrenderer: Mesa DRI Intel(R) HD Graphics 530 (Skylake GT2) 
 version: 3.0 Mesa 18.2.3
 creating shader from shaders/test_vs.glsl...
 shader compiled. index 1
