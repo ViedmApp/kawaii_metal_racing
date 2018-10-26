@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include "GLDebugDrawer.hpp"
+
 #include <string>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -116,21 +118,24 @@ int main(int argc, char* argv[]){
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	//Creacion de objetos del espacio (RigidBodys)
-	btCollisionShape* ballShape = new btSphereShape(btScalar(1.5));
-	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(500),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	btCollisionShape* ballShape = new btBoxShape(btVector3(5,3,5));
+	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,0,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
 
-	btCollisionShape* boxShape = new btBoxShape(btVector3(5,0.2,5));
-	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-5,1),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
-	btRigidBody* pisoShape = ball->getRigidBody();
+	btCollisionShape* boxShape = new btBoxShape(btVector3(100,0.5,100));
+	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-5,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
+	btRigidBody* pisoShape = piso->getRigidBody();
+	GLDebugDrawer* debug = new GLDebugDrawer();
 
-
-    glm::mat4 aux;
-    GLDebugDrawer* debug = new GLDebugDrawer();
 	debug->setDebugMode(btIDebugDraw::DBG_DrawWireframe );
 	debug->setView(&view);
 	debug->setProj(&projection);
 	dynamicsWorld->setDebugDrawer(debug);
+
+
+    glm::mat4 aux;
+
+
 	while (!glfwWindowShouldClose(g_window)){
 
 	       // Se aumenta en un paso la simulacion (calculo del dt)
@@ -140,6 +145,9 @@ int main(int argc, char* argv[]){
 	       if (deltaTime < 0.016f){
 	           continue;
 	       }
+
+
+
 	       lastFrame = currentFrame;
 	        dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 
@@ -156,11 +164,14 @@ int main(int argc, char* argv[]){
 	       view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	        glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
 
-	   	   piso -> draw(model_mat_location);
+	   	  piso -> draw(model_mat_location);
 	       ball->draw(model_mat_location);
-
-
-
+/*
+				 debug->setView(&view);
+				 debug->setProj(&projection);
+				 dynamicsWorld->debugDrawWorld();
+				 debug->drawLines();
+*/
 	       glfwSwapBuffers(g_window);
 	       glfwPollEvents();
 	   }
@@ -181,11 +192,21 @@ void processInput(GLFWwindow *window){
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-    	bodyBall -> applyForce(btVector3(500.,0,0),btVector3(1,0,0));
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    	ball -> accelerate();
-}
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+			ball ->accelerate();
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    	ball -> turnLeft();
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	    	ball -> turnRight();
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+				ball -> brake();
+
+
+
+if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+			ball -> reverse();
+		}
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);

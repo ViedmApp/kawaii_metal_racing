@@ -30,7 +30,7 @@ public:
 
     btVector3 dirr;
     void initialize();
-
+    
     /*virtual void initialize(btDiscreteDynamicsWorld* world) = 0;
     virtual void updatePhysics() = 0;
 

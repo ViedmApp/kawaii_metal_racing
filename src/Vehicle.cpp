@@ -5,8 +5,8 @@
 Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld)
 : GameObject(path,shaderprog,masa,startPosition,startRotation,coll,dynamicsWorld)
 {
-    initialize();  
-    assert(load_mesh((char*)"mallas/ball.obj",this -> wheel_vao,this -> wheel_num_verts));
+    initialize();
+    assert(load_mesh((char*)"mallas/tire_20.obj",this -> wheel_vao,this -> wheel_num_verts));
 }
 
 
@@ -30,12 +30,12 @@ void Vehicle::initialize()
     btScalar suspensionRestLength(0.2f);                                                                                                                 //TODO: PARAM
     btScalar wheelRadius(2.f);
                                                                                                                                //TOCO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(-3.6f, -1.69f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(4.5f, -1.69f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(-3.6f, -1.69f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(4.5f, -1.69f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(-3.6f, -2.00f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(4.5f, -2.00f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(-3.6f, -2.00f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(4.5f, -2.00f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
 
-    
+
     for (int i = 0; i < this -> getVehicle()-> getNumWheels(); i++)
     {
         btWheelInfo &wheel = this -> getVehicle() -> getWheelInfo(i);
@@ -78,18 +78,17 @@ void Vehicle::setVehicle(btRaycastVehicle* vehicle){
 
 void Vehicle::accelerate()
 {
-    if (this->vehicle->getCurrentSpeedKmHour() < 150.f)
-    {
-        this->vehicle->applyEngineForce(85, 0); //TODO: Param
-        this->vehicle->applyEngineForce(85, 1);
+ if (vehicle->getCurrentSpeedKmHour() < 150.f)    {
+        this->vehicle->applyEngineForce(85.f, 0); //TODO: Param
+        this->vehicle->applyEngineForce(85.f, 1);
     }
 }
 void Vehicle::brake()
 {
-    this->vehicle->setBrake(btScalar(1.5), 0); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(1.5), 1); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(1.5), 2); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(1.5), 3); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(5), 0); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(5), 1); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(5), 2); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(5), 3); //TODO: PARAM
 
 }
 void Vehicle::reverse()
@@ -194,4 +193,3 @@ void Vehicle::draw(GLuint model_mat_location)
         glDrawArrays(GL_TRIANGLES, 0, this->getWheelNumVerts());
     }
 }
-
