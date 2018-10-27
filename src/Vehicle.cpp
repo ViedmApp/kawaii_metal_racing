@@ -29,8 +29,13 @@ void Vehicle::initialize()
     btVector3 wheelAxis(-1.0f, 0.0f, 0.0f);
     btScalar suspensionRestLength(0.2f);                                                                                                                 //TODO: PARAM
     btScalar wheelRadius(0.790165f);
+<<<<<<< HEAD
     this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.777563f,2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
     this -> getVehicle() -> addWheel(btVector3(1.45459f, -0.777563, 2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+=======
+    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -1.177563f,2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(1.45459f, -1.177563, 2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+>>>>>>> 678bd582a64738688653e0aad2e30bfbba1e0608
                                                                                                                         //TOCO: PARAM
     this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.777563, -2.87147), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
     this -> getVehicle() -> addWheel(btVector3(1.45459, -0.777563,-2.827147f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
@@ -43,7 +48,7 @@ void Vehicle::initialize()
         //wheel.m_wheelsDampingCompression = -1.7f;   //TODO: PARAM
         wheel.m_frictionSlip = btScalar(10000.); //TODO: PARAM
         wheel.m_rollInfluence = btScalar(0.f);   //TODO: PARAM
-        wheel.m_maxSuspensionTravelCm = 100.f;   //TODO: PARAM
+        wheel.m_maxSuspensionTravelCm = 150.f;   //TODO: PARAM
     }
     setIsAlive(true);
 
@@ -89,17 +94,21 @@ void Vehicle::accelerate()
 }
 void Vehicle::brake()
 {
-    this->vehicle->setBrake(btScalar(2), 0); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(2), 1); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(2), 2); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(2), 3); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(1.15), 0); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(1.15), 1); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(1.15), 2); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(1.15), 3); //TODO: PARAM
 
 }
 void Vehicle::reverse()
 {
     //TODO: ADD LIMIT
     this->vehicle->applyEngineForce(-50, 0); //TODO: Param
-    this->vehicle->applyEngineForce(-50, 1); //TODO: PARAM
+    this->vehicle->applyEngineForce(-50, 1); //TODO: 
+    this->vehicle->setBrake(btScalar(0), 0); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 1); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 2); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 3); //TODO: PARAM
 }
 
 void Vehicle::turnRight()

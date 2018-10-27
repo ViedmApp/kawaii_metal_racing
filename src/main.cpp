@@ -119,12 +119,12 @@ int main(int argc, char* argv[]){
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	//Creacion de objetos del espacio (RigidBodys)
-	btCollisionShape* ballShape = new btBoxShape(btVector3(1,0.5,2));
-	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,2,0),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	btCollisionShape* ballShape = new btBoxShape(btVector3(1,1,2));
+	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,3,0),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
 
-	btCollisionShape* boxShape = new btBoxShape(btVector3(100,2,100));
-	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-2,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
+	btCollisionShape* boxShape = new btBoxShape(btVector3(50,15,100));
+	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-15,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
 	btRigidBody* pisoShape = piso->getRigidBody();
 	GLDebugDrawer* debug = new GLDebugDrawer();
 
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]){
 	       view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	        glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
 
-	   	  piso -> draw(model_mat_location);
+	   	   piso -> draw(model_mat_location);
 	       ball->draw(model_mat_location);
 
 				 debug->setView(&view);
