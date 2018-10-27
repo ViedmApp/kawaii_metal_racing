@@ -176,6 +176,29 @@ int Vehicle::getWheelNumVerts()
     return this -> wheel_num_verts;
 }
 
+float Vehicle::getX()
+{
+    btTransform trans;
+    this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
+    return trans.getOrigin()[0];
+}
+
+float Vehicle::getY()
+{
+    btTransform trans;
+    this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
+    return trans.getOrigin()[1];
+}
+
+float Vehicle::getZ()
+{
+    btTransform trans;
+    this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
+    return trans.getOrigin()[2];
+}
+
+
+
 void Vehicle::draw(GLuint model_mat_location)
 {
     btTransform trans;
