@@ -11,7 +11,7 @@ GLFWwindow* window;
 public:
   Vehicle* firstPlayer;
   Vehicle* secondPlayer;
-    Input(GLFWwindow* window, Vehicle* firstPlayer);
+    Input(GLFWwindow* window, Vehicle* firstPlayer, Vehicle* secondPlayer);
    ~Input();
    void initialiceInput();
 };

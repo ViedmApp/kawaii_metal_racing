@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <math.h>
 #include "GLDebugDrawer.hpp"
+#include "Camera.hpp"
 
 #include <string>
 #include <GLFW/glfw3.h>
@@ -52,7 +53,7 @@ void processInput(GLFWwindow *window);
 
 
 // camera
-glm::vec3 cameraPos   = glm::vec3(3.0f, 1.0f, 30.0f);
+glm::vec3 cameraPos   = glm::vec3(3.0f, 5.0f, 30.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraLook = glm::vec3(0.0f,0.0f,0.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -63,14 +64,18 @@ float pitch =  0.0f;
 float lastX =  g_gl_width / 2.0;
 float lastY =  g_gl_height / 2.0;
 float fov   =  45.0f;
+Camera* camara=new Camera(cameraPos,cameraFront,cameraUp,fov,pitch,yaw,g_gl_width,g_gl_height);
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 btRigidBody* bodyBall;
+btRigidBody* bodyBall2;
+
 btDiscreteDynamicsWorld* dynamicsWorld;
 Vehicle *ball;
+Vehicle *ball2;
 
 
 int main(int argc, char* argv[]){
@@ -94,8 +99,8 @@ int main(int argc, char* argv[]){
 	GLuint shader_programme = create_programme_from_files (
 		VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE
 	);
-    glm::mat4 projection = glm::perspective(glm::radians(fov), (float)g_gl_width / (float)g_gl_height, 0.1f, 100.0f);
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    glm::mat4 projection = camara->getPerspectiva();
+    glm::mat4 view = camara->getViewMatrix();
 
 	int view_mat_location = glGetUniformLocation (shader_programme, "view");
 	glUseProgram (shader_programme);
@@ -119,14 +124,21 @@ int main(int argc, char* argv[]){
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	//Creacion de objetos del espacio (RigidBodys)
-	btCollisionShape* ballShape = new btBoxShape(btVector3(1,1,2));
+	btCollisionShape* ballShape = new btBoxShape(btVector3(1,1,4.5));
 	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,3,0),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
 	bodyBall = ball->getRigidBody();
 
+	btCollisionShape* ballShape2 = new btBoxShape(btVector3(1,1,4.5));
+	ball2 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,3,0),btQuaternion(0,1,0,0),ballShape2,dynamicsWorld);
+	bodyBall2 = ball2->getRigidBody();
+
+
+
 	btCollisionShape* boxShape = new btBoxShape(btVector3(50,15,100));
-	GameObject* piso = new GameObject((char*)"mallas/piso.obj",shader_programme,btScalar(0),btVector3(0,-15,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
+	GameObject* piso = new GameObject((char*)"mallas/test_map_flat.obj",shader_programme,btScalar(0),btVector3(0,-15,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
 	btRigidBody* pisoShape = piso->getRigidBody();
 	GLDebugDrawer* debug = new GLDebugDrawer();
+
 
 	debug->setDebugMode(btIDebugDraw::DBG_DrawWireframe );
 	debug->setView(&view);
@@ -136,7 +148,7 @@ int main(int argc, char* argv[]){
 
     glm::mat4 aux;
 
-		Input* input=new Input(g_window,ball);
+		Input* input=new Input(g_window,ball,ball2);
 
 	while (!glfwWindowShouldClose(g_window)){
 
@@ -150,7 +162,7 @@ int main(int argc, char* argv[]){
 
 	       lastFrame = currentFrame;
 	        dynamicsWorld->stepSimulation(1.f / 60.f, 10);
-
+					processInput(g_window);
 	       input->initialiceInput();
 
 	       glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -158,14 +170,16 @@ int main(int argc, char* argv[]){
 
 	        glUseProgram (shader_programme);
 
-	       projection = glm::perspective(glm::radians(fov), (float)g_gl_width / (float)g_gl_height, 0.1f, 100.0f);
+	       projection = camara->getPerspectiva();
 	       glUniformMatrix4fv (proj_mat_location, 1, GL_FALSE, &projection[0][0]);
 
-	       view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	       view = camara->getViewMatrix();
 	        glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
 
 	   	   piso -> draw(model_mat_location);
 	       ball->draw(model_mat_location);
+				 ball2->draw(model_mat_location);
+
 
 				 debug->setView(&view);
 				 debug->setProj(&projection);
@@ -184,14 +198,17 @@ void processInput(GLFWwindow *window){
         glfwSetWindowShouldClose(window, true);
 
     float cameraSpeed = 2.5 * deltaTime;
+		glm::vec3 front=camara->getCameraFront();
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camara->setCameraPos(camara->getCameraPos()+cameraSpeed*front);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+				camara->setCameraPos(camara->getCameraPos()-cameraSpeed*front);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camara->setCameraPos(camara->getCameraPos() -
+					glm::normalize(glm::cross(front, camara->getCameraUp())) * cameraSpeed);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		camara->setCameraPos(camara->getCameraPos() +
+			glm::normalize(glm::cross(front, camara->getCameraUp())) * cameraSpeed);
     /*if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 			ball ->accelerate();
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
