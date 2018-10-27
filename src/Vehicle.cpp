@@ -28,12 +28,12 @@ void Vehicle::initialize()
     btVector3 wheelDirection(0.0f, -1.0f, 0.0f);
     btVector3 wheelAxis(-1.0f, 0.0f, 0.0f);
     btScalar suspensionRestLength(0.2f);                                                                                                                 //TODO: PARAM
-    btScalar wheelRadius(2.f);
-                                                                                                                               //TOCO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(-3.6f, -2.00f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(4.5f, -2.00f, 6.3), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(-3.6f, -2.00f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(4.5f, -2.00f, -6.32f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+    btScalar wheelRadius(0.790165f);
+    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.977563f,2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(1.45459f, -0.977563, 2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+                                                                                                                        //TOCO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.977563, -2.87147), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(1.45459, -0.977563,-2.827147f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
 
 
     for (int i = 0; i < this -> getVehicle()-> getNumWheels(); i++)
@@ -79,16 +79,16 @@ void Vehicle::setVehicle(btRaycastVehicle* vehicle){
 void Vehicle::accelerate()
 {
  if (vehicle->getCurrentSpeedKmHour() < 150.f)    {
-        this->vehicle->applyEngineForce(85.f, 0); //TODO: Param
-        this->vehicle->applyEngineForce(85.f, 1);
+        this->vehicle->applyEngineForce(40.f, 0); //TODO: Param
+        this->vehicle->applyEngineForce(40.f, 1);
     }
 }
 void Vehicle::brake()
 {
-    this->vehicle->setBrake(btScalar(5), 0); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(5), 1); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(5), 2); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(5), 3); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(2), 0); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(2), 1); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(2), 2); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(2), 3); //TODO: PARAM
 
 }
 void Vehicle::reverse()
