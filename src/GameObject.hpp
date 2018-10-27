@@ -16,14 +16,16 @@ protected:
     btRigidBody* rigidBody;
     glm::mat4 modelMatrix;
 
-    bool load_mesh (const char* file_name, GLuint& vao, int& vert_no);
+    bool load_mesh (const char* file_name, GLuint& vao, int& vert_no, btCollisionShape** col);
+    bool load_mesh (const char* file_name, GLuint& vao, int& vert_no); 
+    
 
 
 public:
     GLuint tex_location;
 
     GameObject();
-    GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld);
+    GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
 
     ~GameObject();
 

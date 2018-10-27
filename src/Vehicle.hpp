@@ -20,7 +20,7 @@ protected:
     bool turned;
 public:
 
-    Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld);
+    Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
     ~Vehicle();
 
     glm::mat4 model;

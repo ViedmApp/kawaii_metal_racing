@@ -124,18 +124,18 @@ int main(int argc, char* argv[]){
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	//Creacion de objetos del espacio (RigidBodys)
-	btCollisionShape* ballShape = new btBoxShape(btVector3(1,1,4.5));
-	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,3,0),btQuaternion(0,1,0,0),ballShape,dynamicsWorld);
+	
+	ball = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(-3,3,0),btQuaternion(0,1,0,0),dynamicsWorld);
 	bodyBall = ball->getRigidBody();
 
-	btCollisionShape* ballShape2 = new btBoxShape(btVector3(1,1,4.5));
-	ball2 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(0,3,0),btQuaternion(0,1,0,0),ballShape2,dynamicsWorld);
+	
+	ball2 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(3,3,0),btQuaternion(0,1,0,0),dynamicsWorld);
 	bodyBall2 = ball2->getRigidBody();
 
 
 
-	btCollisionShape* boxShape = new btBoxShape(btVector3(50,15,100));
-	GameObject* piso = new GameObject((char*)"mallas/test_map_flat.obj",shader_programme,btScalar(0),btVector3(0,-15,1),btQuaternion(0,1,0,0),boxShape,dynamicsWorld);
+	
+	GameObject* piso = new GameObject((char*)"mallas/test_map_flat.obj",shader_programme,btScalar(0),btVector3(0,-15,1),btQuaternion(0,1,0,0),dynamicsWorld);
 	btRigidBody* pisoShape = piso->getRigidBody();
 	GLDebugDrawer* debug = new GLDebugDrawer();
 
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]){
 
     glm::mat4 aux;
 
-		Input* input=new Input(g_window,ball,ball2);
+	Input* input=new Input(g_window,ball,ball2);
 
 	while (!glfwWindowShouldClose(g_window)){
 

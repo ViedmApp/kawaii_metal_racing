@@ -2,8 +2,8 @@
 #include "Vehicle.hpp"
 
 
-Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btCollisionShape* coll,btDiscreteDynamicsWorld* dynamicsWorld)
-: GameObject(path,shaderprog,masa,startPosition,startRotation,coll,dynamicsWorld)
+Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld)
+: GameObject(path,shaderprog,masa,startPosition,startRotation,dynamicsWorld)
 {
     initialize();
     assert(load_mesh((char*)"mallas/tire_20.obj",this -> wheel_vao,this -> wheel_num_verts));
@@ -84,10 +84,6 @@ void Vehicle::accelerate()
         this->vehicle->applyEngineForce(40.f, 0); //TODO: Param
         this->vehicle->applyEngineForce(40.f, 1);
     }
-    this->vehicle->setBrake(btScalar(0), 0); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 1); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 2); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 3); //TODO: PARAM
 }
 void Vehicle::brake()
 {
@@ -102,10 +98,6 @@ void Vehicle::reverse()
     //TODO: ADD LIMIT
     this->vehicle->applyEngineForce(-50, 0); //TODO: Param
     this->vehicle->applyEngineForce(-50, 1); //TODO: 
-    this->vehicle->setBrake(btScalar(0), 0); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 1); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 2); //TODO: PARAM
-    this->vehicle->setBrake(btScalar(0), 3); //TODO: PARAM
 }
 
 void Vehicle::turnRight()

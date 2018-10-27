@@ -12,6 +12,8 @@ void Input::initialiceInput(){
 
   if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     firstPlayer ->accelerate();
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)
+    firstPlayer -> updatePhysics();
   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     firstPlayer -> turnRight();
   if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
@@ -21,6 +23,8 @@ void Input::initialiceInput(){
 
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
       secondPlayer ->accelerate();
+    if (glfwGetKey(window, GLFW_KEY_U) == GLFW_RELEASE)
+    secondPlayer -> updatePhysics();
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
       secondPlayer -> turnRight();
     if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
