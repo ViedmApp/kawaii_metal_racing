@@ -34,6 +34,7 @@
 #include "Vehicle.hpp"
 #include "GLDebugDrawer.hpp"
 #include <bullet/btBulletDynamicsCommon.h>
+#include "Input.hpp"
 
 #define GL_LOG_FILE "log/gl.log"
 #define VERTEX_SHADER_FILE "shaders/test_vs.glsl"
@@ -135,11 +136,11 @@ int main(int argc, char* argv[]){
 
     glm::mat4 aux;
 
+		Input* input=new Input(g_window,ball);
 
 	while (!glfwWindowShouldClose(g_window)){
 
 	       // Se aumenta en un paso la simulacion (calculo del dt)
-
 	       float currentFrame = glfwGetTime();
 	       deltaTime = currentFrame - lastFrame;
 	       if (deltaTime < 0.016f){
@@ -147,11 +148,10 @@ int main(int argc, char* argv[]){
 	       }
 
 
-
 	       lastFrame = currentFrame;
 	        dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 
-	       processInput(g_window);
+	       input->initialiceInput();
 
 	       glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -192,7 +192,7 @@ void processInput(GLFWwindow *window){
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+    /*if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 			ball ->accelerate();
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     	ball -> turnLeft();
@@ -201,12 +201,11 @@ void processInput(GLFWwindow *window){
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 				ball -> brake();
 
-
-
-if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-			ball -> reverse();
-		}
-
+		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+					ball -> reverse();
+			}
+			*/
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);

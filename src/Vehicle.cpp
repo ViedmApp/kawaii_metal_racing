@@ -29,11 +29,11 @@ void Vehicle::initialize()
     btVector3 wheelAxis(-1.0f, 0.0f, 0.0f);
     btScalar suspensionRestLength(0.2f);                                                                                                                 //TODO: PARAM
     btScalar wheelRadius(0.790165f);
-    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.977563f,2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(1.45459f, -0.977563, 2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.777563f,2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false);  //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(1.45459f, -0.777563, 2.2f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, false); //TODO: PARAM
                                                                                                                         //TOCO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.977563, -2.87147), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
-    this -> getVehicle() -> addWheel(btVector3(1.45459, -0.977563,-2.827147f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(-1.45459f, -0.777563, -2.87147), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);   //TODO: PARAM
+    this -> getVehicle() -> addWheel(btVector3(1.45459, -0.777563,-2.827147f), wheelDirection, wheelAxis, suspensionRestLength, wheelRadius, *tuning, true);    //TODO: PARAM
 
 
     for (int i = 0; i < this -> getVehicle()-> getNumWheels(); i++)
@@ -82,6 +82,10 @@ void Vehicle::accelerate()
         this->vehicle->applyEngineForce(40.f, 0); //TODO: Param
         this->vehicle->applyEngineForce(40.f, 1);
     }
+    this->vehicle->setBrake(btScalar(0), 0); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 1); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 2); //TODO: PARAM
+    this->vehicle->setBrake(btScalar(0), 3); //TODO: PARAM
 }
 void Vehicle::brake()
 {
