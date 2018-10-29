@@ -13,8 +13,8 @@ Camera::Camera(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 camera
 	setView(cameraPosition,
 			cameraPosition + cameraFront,
 			cameraUp);
-	setProjection(width,height);
-	//setOrtho(width,height);
+	//setProjection(width,height);
+	setOrtho(width,height);
 	updateCameraVectors();
 }
 
@@ -45,7 +45,7 @@ void Camera::setProjection(float width,float height)
 	this->projection = glm::perspective(glm::radians(this->field_of_view),
 										(float) width/(float)height,
 										0.1f,
-										100.0f);
+										1000.0f);
 }
 
 void Camera::setOrtho(float width, float height)
@@ -54,8 +54,8 @@ void Camera::setOrtho(float width, float height)
 								50.0f,
 								-50.0f,
 								50.0f,
-								0.0f,
-								100.0f);
+								-50.0f,
+								50.0f);
 }
 
 void Camera::setCameraPos(glm::vec3 cameraPos)

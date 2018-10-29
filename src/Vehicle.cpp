@@ -1,4 +1,3 @@
-
 #include "Vehicle.hpp"
 
 
@@ -97,7 +96,7 @@ void Vehicle::reverse()
 {
     //TODO: ADD LIMIT
     this->vehicle->applyEngineForce(-50, 0); //TODO: Param
-    this->vehicle->applyEngineForce(-50, 1); //TODO: 
+    this->vehicle->applyEngineForce(-50, 1); //TODO:
 }
 
 void Vehicle::turnRight()

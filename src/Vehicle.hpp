@@ -31,7 +31,6 @@ public:
     btVector3 dirr;
     void initialize();
 
-    
     /*virtual void initialize(btDiscreteDynamicsWorld* world) = 0;
     virtual void updatePhysics() = 0;
 
@@ -45,6 +44,7 @@ public:
     virtual void spawn() = 0;
     virtual void despawn(btDiscreteDynamicsWorld* world) = 0;
 */
+
     float getX();
     float getY();
     float getZ();
