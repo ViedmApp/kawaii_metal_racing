@@ -25,6 +25,21 @@ void Game::init()
 	float fov   =  45.0f;
 	
 	this->camara=new Camera(cameraPos,cameraFront,cameraUp,fov,pitch,yaw,g_gl_width,g_gl_height);
+
+	cameraPos   = glm::vec3(-3.0f, 5.0f, 30.0f);
+	cameraFront = glm::vec3(0.0f, -1.0f, -1.0f);
+	cameraLook = glm::vec3(0.0f,0.0f,0.0f);
+	cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	firstMouse = true;
+	yaw   = -90.0f;	
+	pitch =  0.0f;
+	lastX =  g_gl_width / 2.0;
+	lastY =  g_gl_height / 2.0;
+	fov   =  45.0f;
+
+	this->camara2=new Camera(cameraPos,cameraFront,cameraUp,fov,pitch,yaw,g_gl_width,g_gl_height);
+
 	
 	restart_gl_log ();
 	start_gl ();
@@ -34,7 +49,8 @@ void Game::init()
 	glCullFace (GL_BACK); 
 	glFrontFace (GL_CCW); 
 	glClearColor (0.2, 0.2, 0.2, 1.0);
-	glViewport (0, 0, g_gl_width, g_gl_height);
+	glViewport (0, 0, g_gl_width/2, g_gl_height);
+
 
 
 	this->shader_programme = create_programme_from_files (
@@ -42,6 +58,9 @@ void Game::init()
 	);
     this->projection = camara->getPerspectiva();
     this->view = camara->getViewMatrix();
+
+    this->projection2 = camara2->getPerspectiva();
+    this->view2 = camara2->getViewMatrix();
 
 	this->view_mat_location = glGetUniformLocation (shader_programme, "view");
 	glUseProgram (shader_programme);
@@ -61,12 +80,12 @@ void Game::init()
 	this->dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
-	this->vehicle1 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(-3,1,0),btQuaternion(0,1,0,0),dynamicsWorld);
-	this->vehicle2 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(10),btVector3(3,1,0),btQuaternion(0,1,0,0),dynamicsWorld);
+	this->vehicle1 = new Vehicle((char*)"mallas/ae86_body.obj",shader_programme,btScalar(25),btVector3(-3,1,10),btQuaternion(0,1,0,0),dynamicsWorld);
+	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld);
 	this->piso = new GameObject((char*)"mallas/piso3.obj",shader_programme,btScalar(0),btVector3(0,-1,1),btQuaternion(0,1,0,0),dynamicsWorld);
-	this->goal = new GameObject((char*)"mallas/goal.obj",shader_programme,btScalar(0),btVector3(5,2,10),btQuaternion(0,1,0,0),dynamicsWorld);
+	this->goal = new GameObject((char*)"mallas/goal.obj",shader_programme,btScalar(0),btVector3(5,4,10),btQuaternion(0,1,0,0),dynamicsWorld);
 
-	this->input=new Input(g_window,vehicle1,vehicle2,camara);
+	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
 	this->debug = new GLDebugDrawer();
 
 	debug->setDebugMode(btIDebugDraw::DBG_DrawWireframe );
@@ -74,7 +93,8 @@ void Game::init()
 	debug->setProj(&projection);
 	dynamicsWorld->setDebugDrawer(debug);
 	
-	
+	vehicle1 -> updatePhysics();
+	vehicle2 -> updatePhysics();
 }
 
 
@@ -98,25 +118,35 @@ void Game::main_loop()
 
         glUseProgram (shader_programme);
 
+		glViewport (0, 0, g_gl_width/2, g_gl_height);
         projection = camara->getPerspectiva();
         glUniformMatrix4fv (proj_mat_location, 1, GL_FALSE, &projection[0][0]);
-
         view = camara->getViewMatrix();
         glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
-
-    	piso -> draw(model_mat_location);
         vehicle1->draw(model_mat_location);
-   	    vehicle2->draw(model_mat_location);
+    	vehicle2->draw(model_mat_location);
+    	piso -> draw(model_mat_location);
+	    goal->draw(model_mat_location);
+
+        glViewport (g_gl_width/2, 0, g_gl_width/2, g_gl_height);
+        projection2 = camara2->getPerspectiva();
+        glUniformMatrix4fv (proj_mat_location, 1, GL_FALSE, &projection2[0][0]);
+        view2 = camara2->getViewMatrix();
+        glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view2[0][0]);
+    	vehicle1->draw(model_mat_location);
+    	vehicle2->draw(model_mat_location);
+    	piso -> draw(model_mat_location);
 	    goal->draw(model_mat_location);
 
 	   
-    	debug->setView(&view);
+    	/*debug->setView(&view);
 		debug->setProj(&projection);
 		dynamicsWorld->debugDrawWorld();
-		debug->drawLines();
+		debug->drawLines();*/
 	    
 		
         glfwSwapBuffers(g_window);
         glfwPollEvents();
 	}
+	glfwTerminate();
 }

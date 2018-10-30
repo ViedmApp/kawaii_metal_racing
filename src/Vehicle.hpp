@@ -25,25 +25,8 @@ public:
 
     glm::mat4 model;
 
-
-
-
     btVector3 dirr;
     void initialize();
-
-    /*virtual void initialize(btDiscreteDynamicsWorld* world) = 0;
-    virtual void updatePhysics() = 0;
-
-    virtual void accelerate() = 0;
-    virtual void brake() = 0;
-    virtual void reverse() = 0;
-    virtual void turnLeft() = 0;
-    virtual void turnRight() = 0;
-
-
-    virtual void spawn() = 0;
-    virtual void despawn(btDiscreteDynamicsWorld* world) = 0;
-*/
 
     float getX();
     float getY();

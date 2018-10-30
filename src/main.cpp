@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
-int g_gl_width = 800;
-int g_gl_height = 600;
+int g_gl_width = 1366;
+int g_gl_height = 768;
 GLFWwindow* g_window = NULL;
 
 int main()
@@ -9,8 +9,6 @@ int main()
 	Game* game = new Game();
 	
 	game -> main_loop();
-	
-	glfwTerminate();
 	
 	return 0;
 }

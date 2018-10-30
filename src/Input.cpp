@@ -1,15 +1,22 @@
 #include "Input.hpp"
-Input::Input(GLFWwindow* window, Vehicle* firstPlayer, Vehicle* secondPlayer, Camera *camara)
+Input::Input(GLFWwindow* window, Vehicle* firstPlayer, Vehicle* secondPlayer, Camera *camara, Camera* camara2)
 {
   this->window = window;
   this->firstPlayer = firstPlayer;
   this->secondPlayer = secondPlayer;
   this->camara=camara;
+  this -> camara2 = camara2;
 }
 
 void Input::initialiceInput(){
   prevPlayerX=firstPlayer->getX();
   prevPlayerZ=firstPlayer->getZ();
+
+  prevPlayer2X=secondPlayer->getX();
+  prevPlayer2Z=secondPlayer->getZ();
+
+
+
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
       glfwSetWindowShouldClose(window, true);
 
@@ -40,6 +47,11 @@ void Input::initialiceInput(){
 camara->setCameraPos(glm::vec3(camara->getCameraPos().x - 0.15*(camara->getCameraPos().x - prevPlayerX),
   0,
   camara->getCameraPos().z - 0.15*(camara->getCameraPos().z - prevPlayerZ)));
+
+
+camara2->setCameraPos(glm::vec3(camara2->getCameraPos().x - 0.15*(camara2->getCameraPos().x - prevPlayer2X),
+  0,
+  camara2->getCameraPos().z - 0.15*(camara2->getCameraPos().z - prevPlayer2Z)));
 }
 
 

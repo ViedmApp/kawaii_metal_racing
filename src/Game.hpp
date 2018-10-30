@@ -14,12 +14,15 @@ class Game
 	protected:
 		glm::mat4 projection;
 		glm::mat4 view;
+		glm::mat4 projection2;
+		glm::mat4 view2;
 		GLuint shader_programme;
 		int view_mat_location;
 		int proj_mat_location;
 		int model_mat_location;
 		btDiscreteDynamicsWorld* dynamicsWorld;
 		Camera* camara;
+		Camera* camara2;
 		Vehicle* vehicle1;
 		Vehicle* vehicle2;
 		Input* input;

@@ -156,10 +156,6 @@ void Vehicle::updatePhysics()
     {
         this -> setTurned(false);
     }
-    this -> getVehicle()->setBrake(0, 0);
-    this -> getVehicle()->setBrake(0, 1);
-    this -> getVehicle()->setBrake(0, 2);
-    this -> getVehicle()->setBrake(0, 3);
 
     this->getVehicle()->applyEngineForce(0, 0); //TODO: Param
     this->getVehicle()->applyEngineForce(0, 1);
