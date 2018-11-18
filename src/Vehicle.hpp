@@ -20,7 +20,11 @@ protected:
     bool turned;
 public:
 
-    Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
+    Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+        btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld,
+        const char* texture_path);
+    Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+        btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
     ~Vehicle();
 
     glm::mat4 model;
@@ -42,6 +46,7 @@ public:
     void turnLeft();
     void turnRight();
     void updatePhysics();
+    void updateTurn();
     void fire();
     void setTurned(bool turn);    //void spawn();
     //void despawn(btDiscreteDynamicsWorld *world);

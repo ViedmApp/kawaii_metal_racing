@@ -1,13 +1,22 @@
 #include "Vehicle.hpp"
 
 
-Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld)
-: GameObject(path,shaderprog,masa,startPosition,startRotation,dynamicsWorld)
+Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+    btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld,
+    const char* texture_path)
+: GameObject(path,shaderprog,masa,startPosition,startRotation,dynamicsWorld,texture_path)
 {
     initialize();
     assert(load_mesh((char*)"mallas/tire_20.obj",this -> wheel_vao,this -> wheel_num_verts));
 }
 
+Vehicle::Vehicle(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+    btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld)
+: GameObject(path,shaderprog,masa,startPosition,startRotation,dynamicsWorld)
+{
+    initialize();
+    assert(load_mesh((char*)"mallas/tire_20.obj",this -> wheel_vao,this -> wheel_num_verts));
+}
 
 
 
@@ -129,7 +138,14 @@ void Vehicle::setTurned(bool turn){
 
 void Vehicle::updatePhysics()
 {
-    if (!this -> getTurned())
+
+    this->getVehicle()->applyEngineForce(0, 0); //TODO: Param
+    this->getVehicle()->applyEngineForce(0, 1);
+}
+
+void Vehicle::updateTurn()
+{
+     if (!this -> getTurned())
     {
         if (this -> getVehicle()->getSteeringValue(0) > 0)
         {
@@ -156,9 +172,6 @@ void Vehicle::updatePhysics()
     {
         this -> setTurned(false);
     }
-
-    this->getVehicle()->applyEngineForce(0, 0); //TODO: Param
-    this->getVehicle()->applyEngineForce(0, 1);
 }
 
 GLuint Vehicle::getWheelVao()

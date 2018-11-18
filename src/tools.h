@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string>
+#include <assert.h>
 #include "tools.h"
 #include <glm/glm.hpp>
 #include <GL/glew.h>

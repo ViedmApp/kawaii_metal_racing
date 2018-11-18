@@ -1,13 +1,53 @@
 #include "GameObject.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 GameObject::GameObject(){}
 
-GameObject::GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld)
+GameObject::GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+         btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld,
+         const char* texture_path)
 {
     this->world= dynamicsWorld;
     this->mass = masa;
     this->position = startPosition;
     this->rotation = startRotation;
+
+
+    btCollisionShape* coll;
+    if(load_mesh(path, vao, this->vertNumber,&coll)==false){
+        printf("Error loading %s", path);
+    }
+
+    //TEXTURES
+    load_texture2(shader_programme,texture_path,texture,tex_location);
+    btTransform startTransform;
+    startTransform.setIdentity();
+
+    bool isDynamic = (this->mass != 0.f);
+    btVector3 localInertia(0, 0, 0);
+    if (isDynamic)
+        coll->calculateLocalInertia(this->mass, localInertia);
+
+    startTransform.setOrigin(this->position);
+    startTransform.setRotation(this->rotation);
+
+    btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(this->mass, myMotionState, coll, localInertia);
+    this->rigidBody = new btRigidBody(rbInfo);
+    dynamicsWorld->addRigidBody(this->rigidBody);
+
+}
+
+//NO_TEXTURE
+GameObject::GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+         btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld)
+{
+    this->world= dynamicsWorld;
+    this->mass = masa;
+    this->position = startPosition;
+    this->rotation = startRotation;
+    this->shader_programme = shader_programme;
     btCollisionShape* coll;
     if(load_mesh(path, vao, this->vertNumber,&coll)==false){
         printf("Error loading %s", path);
@@ -333,4 +373,140 @@ void GameObject::draw(int matloc){
     glUniformMatrix4fv(matloc, 1, GL_FALSE, &this->modelMatrix[0][0]);
     glBindVertexArray(this->getVao());
     glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
+}
+
+bool GameObject::load_texture (GLuint shaderprog, const char* texture_path, const char* normal_path){
+		int x, y, n;
+		int force_channels = 4;
+		unsigned char* image_data = stbi_load (texture_path, &x, &y, &n, force_channels);
+		if (!image_data) {
+			fprintf (stderr, "ERROR: could not load %s\n", texture_path);
+		}
+	
+		if ((x & (x - 1)) != 0 || (y & (y - 1)) != 0) 
+			fprintf (stderr, "WARNING: texture %s is not power-of-2 dimensions: %i, %i\n", texture_path, x, y);
+	
+		int width_in_bytes = x * 4;
+		unsigned char *top = NULL;
+		unsigned char *bottom = NULL;
+		unsigned char temp = 0;
+		int half_height = y / 2;
+	
+		for(int row = 0; row < half_height; row++) {
+			top = image_data + row * width_in_bytes;
+			bottom = image_data + (y - row - 1) * width_in_bytes;
+			for(int col = 0; col < width_in_bytes; col++){
+				temp = *top;
+				*top = *bottom;
+				*bottom = temp;
+				top++;
+				bottom++;
+			}
+		}
+	
+		texture = 0;
+		glGenTextures(1, &texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		
+	
+		tex_location = glGetUniformLocation (shaderprog, "basic_texture");
+		
+		free(image_data);
+
+		if (normal_path != NULL) {
+			x, y, n;
+			force_channels = 4;
+			unsigned char* image_data2 = stbi_load (normal_path, &x, &y, &n, force_channels);
+			if (!image_data2) {
+				fprintf (stderr, "ERROR: could not load %s\n", normal_path);
+			}
+		
+			if ((x & (x - 1)) != 0 || (y & (y - 1)) != 0) 
+				fprintf (stderr, "WARNING: texture %s is not power-of-2 dimensions: %i, %i\n", normal_path, x, y);
+		
+			width_in_bytes = x * 4;
+			top = NULL;
+			bottom = NULL;
+			temp = 0;
+			half_height = y / 2;
+		
+			for(int row = 0; row < half_height; row++) {
+				top = image_data2 + row * width_in_bytes;
+				bottom = image_data2 + (y - row - 1) * width_in_bytes;
+				for(int col = 0; col < width_in_bytes; col++){
+					temp = *top;
+					*top = *bottom;
+					*bottom = temp;
+					top++;
+					bottom++;
+				}
+			}
+		
+			glActiveTexture(GL_TEXTURE1);			
+			normalMap = 0;
+			glGenTextures(1, &normalMap);
+			glBindTexture(GL_TEXTURE_2D, normalMap);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data2);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			
+			normalMapLoc = glGetUniformLocation (shaderprog, "normal_map");
+
+			free(image_data2);			
+		}
+		return true;
+}
+
+bool GameObject::load_texture2 (GLuint shaderprog, const char* texture_path, GLuint& texture, GLuint tex_location){
+
+	int x, y, n;
+	int force_channels = 4;
+	unsigned char* image_data = stbi_load (texture_path, &x, &y, &n, force_channels);
+	if (!image_data) {
+		fprintf (stderr, "ERROR: could not load %s\n", texture_path);
+	}
+
+	if ((x & (x - 1)) != 0 || (y & (y - 1)) != 0) 
+		fprintf (stderr, "WARNING: texture %s is not power-of-2 dimensions: %i, %i\n", texture_path, x, y);
+
+	int width_in_bytes = x * 4;
+	unsigned char *top = NULL;
+	unsigned char *bottom = NULL;
+	unsigned char temp = 0;
+	int half_height = y / 2;
+
+	for(int row = 0; row < half_height; row++) {
+		top = image_data + row * width_in_bytes;
+		bottom = image_data + (y - row - 1) * width_in_bytes;
+		for(int col = 0; col < width_in_bytes; col++){
+			temp = *top;
+			*top = *bottom;
+			*bottom = temp;
+			top++;
+			bottom++;
+		}
+	}
+
+	texture = 0;
+	glGenTextures(1, &texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	tex_location = glGetUniformLocation (shaderprog, "basic_texture");
+	//LIBERAR IMAGE DATA
+	return true;
 }

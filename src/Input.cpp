@@ -26,21 +26,25 @@ void Input::initialiceInput(){
     firstPlayer -> updatePhysics();
   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     firstPlayer -> turnRight();
+  if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE)
+    firstPlayer -> updateTurn();
   if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     firstPlayer -> turnLeft();
+  if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE)
+    firstPlayer -> updateTurn();
   if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     firstPlayer -> reverse();
 
-    if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
       secondPlayer ->accelerate();
-      if (glfwGetKey(window, GLFW_KEY_U) == GLFW_RELEASE)
- secondPlayer -> updatePhysics();
-    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-      secondPlayer -> turnRight();
-    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-      secondPlayer -> turnLeft();
-    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-      secondPlayer -> reverse();
+  if (glfwGetKey(window, GLFW_KEY_U) == GLFW_RELEASE)
+      secondPlayer -> updatePhysics();
+  if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+    secondPlayer -> turnRight();
+  if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+    secondPlayer -> turnLeft();
+  if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+    secondPlayer -> reverse();
 
     
 

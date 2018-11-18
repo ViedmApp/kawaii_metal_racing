@@ -50,12 +50,12 @@ void Camera::setProjection(float width,float height)
 
 void Camera::setOrtho(float width, float height)
 {
-	this->projection = glm::ortho(-50.0f,
-								50.0f,
-								-50.0f,
-								50.0f,
-								-50.0f,
-								50.0f);
+	this->projection = glm::ortho(-25.0f,
+								25.0f,
+								-25.0f,
+								25.0f,
+								-25.0f,
+								25.0f);
 }
 
 void Camera::setCameraPos(glm::vec3 cameraPos)

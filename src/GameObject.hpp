@@ -16,16 +16,28 @@ protected:
     btRigidBody* rigidBody;
     glm::mat4 modelMatrix;
 
+    GLuint matloc;
+
+
     bool load_mesh (const char* file_name, GLuint& vao, int& vert_no, btCollisionShape** col);
     bool load_mesh (const char* file_name, GLuint& vao, int& vert_no); 
     
 
 
 public:
+    //TEXTURES
+    GLuint texture;
     GLuint tex_location;
+    unsigned int normalMap;
+    unsigned int normalMapLoc;
+    GLuint shader_programme;
 
     GameObject();
-    GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition, btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
+    GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+         btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld,
+         const char* texture_path);
+    GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
+         btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
 
     ~GameObject();
 
@@ -43,6 +55,8 @@ public:
     void draw(int matloc);
     void setWorld(btDiscreteDynamicsWorld* world);
     btDiscreteDynamicsWorld* getWorld();
+    bool load_texture (GLuint shaderprog, const char* texture_path, const char* normal_path); 
+    bool load_texture2 (GLuint shaderprog, const char* texture_path, GLuint& texture, GLuint tex_location);
 
 };
 
