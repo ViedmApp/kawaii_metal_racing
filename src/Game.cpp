@@ -1,8 +1,11 @@
 #include "Game.hpp"
+using namespace irrklang;
+ISoundEngine *SoundEngine = createIrrKlangDevice();
 
 Game::Game()
 {
 	init();
+
 }
 
 Game::~Game()
@@ -12,10 +15,17 @@ Game::~Game()
 
 void Game::init()
 {
+
+
+
 	glm::vec3 cameraPos   = glm::vec3(3.0f, 5.0f, 30.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, -1.0f, -1.0f);
 	glm::vec3 cameraLook = glm::vec3(0.0f,0.0f,0.0f);
 	glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	SoundEngine->play2D("multi/encendido_auto.ogg",GL_FALSE);
+	
+	
 
 	bool firstMouse = true;
 	float yaw   = -90.0f;	
@@ -98,6 +108,11 @@ void Game::init()
 	
 	vehicle1 -> updatePhysics();
 	vehicle2 -> updatePhysics();
+
+	//SoundEngine->play2D("multi/ex.ogg", GL_TRUE);
+
+
+
 }
 
 
@@ -107,6 +122,7 @@ void Game::main_loop()
 	float lastFrame = 0.0f;
 	while (!glfwWindowShouldClose(g_window))
 	{
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         if (deltaTime < 0.016f)
@@ -150,6 +166,8 @@ void Game::main_loop()
 		
         glfwSwapBuffers(g_window);
         glfwPollEvents();
+        
 	}
+	
 	glfwTerminate();
 }

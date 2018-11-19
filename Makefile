@@ -1,12 +1,12 @@
 CC=g++
 SRC=src/*.cpp
-LIBS=-lGL -lGLEW -lglfw -lassimp -lLinearMath -lBulletDynamics -lBulletCollision
-INCLUDE=-I/usr/include/bullet
+LIBS=-L/usr/lib -L/lib/ikpMP3.dll -lGL -lGLEW -lglfw -lassimp -lLinearMath -lBulletDynamics -lBulletCollision  bin/linux-gcc-64/libIrrKlang.so -pthread
+INCLUDE=-I/usr/include/bullet -Iinclude -Ibin
 EXEC=bin/prog
 
 all: 
-	${CC} ${SRC} ${INCLUDE} ${LIBS} -o ${EXEC} 
+	${CC} ${SRC} -o ${EXEC} ${INCLUDE} ${LIBS}
 
 
 clear:
-	rm bin/*
+	rm bin/prog

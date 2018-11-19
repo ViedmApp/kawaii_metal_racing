@@ -29,6 +29,8 @@ class Game
 		GLDebugDrawer* debug;
 		GameObject* piso;
 		GameObject* goal;
+
+
 		
 
 	public:
