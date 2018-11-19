@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+
 using namespace irrklang;
 
 
@@ -17,11 +19,11 @@ int main()
 
 	if(!engine)	return 0;
 	
-	engine->play2D("multi/ex.ogg", true);
+	engine->play2D("multi/7. Run.wav", true);
 	
 	game -> main_loop();
 	
-	//engine->drop();
+	engine->drop();
 
 	return 0;
 }

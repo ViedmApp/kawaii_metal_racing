@@ -28,7 +28,8 @@ class Game
 		Input* input;
 		GLDebugDrawer* debug;
 		GameObject* piso;
-		GameObject* goal;
+		GameObject* borderL;
+		GameObject* borderR;
 
 
 		

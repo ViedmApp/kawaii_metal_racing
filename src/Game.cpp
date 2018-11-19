@@ -1,6 +1,6 @@
 #include "Game.hpp"
 using namespace irrklang;
-ISoundEngine *SoundEngine = createIrrKlangDevice();
+//ISoundEngine *SoundEngine = createIrrKlangDevice();
 
 Game::Game()
 {
@@ -23,7 +23,7 @@ void Game::init()
 	glm::vec3 cameraLook = glm::vec3(0.0f,0.0f,0.0f);
 	glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	SoundEngine->play2D("multi/encendido_auto.ogg",GL_FALSE);
+	//SoundEngine->play2D("multi/encendido_auto.ogg",GL_FALSE);
 	
 	
 
@@ -92,10 +92,12 @@ void Game::init()
 		btVector3(-3,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/ae86_t2.png");
 	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),
 		btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
-	this->piso = new GameObject((char*)"mallas/map_track_flat.obj",shader_programme,btScalar(0),
-		btVector3(-3,-5,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_flat_t.png");
-	this->goal = new GameObject((char*)"mallas/map_track_flat_border.obj",shader_programme,btScalar(0),
-		btVector3(-3,-5,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/mars1k.jpg");
+	this->piso = new GameObject((char*)"mallas/map_track_turn.obj",shader_programme,btScalar(0),
+		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_turn_t.png");
+	this->borderL = new GameObject((char*)"mallas/map_track_turn_border_T.obj",shader_programme,btScalar(0),
+		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/map_track_flat_border_t.png");
+	this->borderR = new GameObject((char*)"mallas/map_track_turn_border_R.obj",shader_programme,btScalar(0),
+		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/map_track_flat_border_t.png");
 
 	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
 	this->debug = new GLDebugDrawer();
@@ -108,10 +110,6 @@ void Game::init()
 	
 	vehicle1 -> updatePhysics();
 	vehicle2 -> updatePhysics();
-
-	//SoundEngine->play2D("multi/ex.ogg", GL_TRUE);
-
-
 
 }
 
@@ -145,7 +143,8 @@ void Game::main_loop()
         vehicle1->draw(model_mat_location);
     	vehicle2->draw(model_mat_location);
     	piso -> draw(model_mat_location);
-	    goal->draw(model_mat_location);
+	    borderL -> draw(model_mat_location);
+		borderR -> draw(model_mat_location);
 
         glViewport (g_gl_width/2, 0, g_gl_width/2, g_gl_height);
         projection2 = camara2->getPerspectiva();
@@ -155,14 +154,15 @@ void Game::main_loop()
     	vehicle1->draw(model_mat_location);
     	vehicle2->draw(model_mat_location);
     	piso -> draw(model_mat_location);
-	    goal->draw(model_mat_location);
+	    borderL->draw(model_mat_location);
+		borderR -> draw(model_mat_location);
 
-	   /*
+	   
     	debug->setView(&view);
 		debug->setProj(&projection);
 		dynamicsWorld->debugDrawWorld();
 		debug->drawLines();
-	    */
+	    
 		
         glfwSwapBuffers(g_window);
         glfwPollEvents();
