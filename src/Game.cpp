@@ -81,19 +81,21 @@ void Game::init()
 	this->vehicle1 = new Vehicle((char*)"mallas/ae86-t.obj",shader_programme,btScalar(25),
 		btVector3(-3,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/ae86_t2.png");
 	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),
-		btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld);
-	this->piso = new GameObject((char*)"mallas/piso3.obj",shader_programme,btScalar(0),btVector3(0,-1,1),btQuaternion(0,1,0,0),dynamicsWorld);
-	this->goal = new GameObject((char*)"mallas/goal.obj",shader_programme,btScalar(0),btVector3(5,4,10),btQuaternion(0,1,0,0),dynamicsWorld);
+		btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
+	this->piso = new GameObject((char*)"mallas/map_track_flat.obj",shader_programme,btScalar(0),
+		btVector3(-3,-1,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_flat_t.png");
+	this->goal = new GameObject((char*)"mallas/map_track_flat_border.obj",shader_programme,btScalar(0),
+		btVector3(-3,-1,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/mars1k.jpg");
 
 	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
 	this->debug = new GLDebugDrawer();
 
-/*
+
 	debug->setDebugMode(btIDebugDraw::DBG_DrawWireframe );
 	debug->setView(&view);
 	debug->setProj(&projection);
 	dynamicsWorld->setDebugDrawer(debug);
-	*/
+	
 	vehicle1 -> updatePhysics();
 	vehicle2 -> updatePhysics();
 }
@@ -139,12 +141,12 @@ void Game::main_loop()
     	piso -> draw(model_mat_location);
 	    goal->draw(model_mat_location);
 
-	   
+	   /*
     	debug->setView(&view);
 		debug->setProj(&projection);
 		dynamicsWorld->debugDrawWorld();
 		debug->drawLines();
-	    
+	    */
 		
         glfwSwapBuffers(g_window);
         glfwPollEvents();

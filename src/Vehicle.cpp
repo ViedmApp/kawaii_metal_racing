@@ -214,6 +214,15 @@ void Vehicle::draw(GLuint model_mat_location)
     trans.getOpenGLMatrix(&model[0][0]);
     this -> setModelMatrix(this->model);
     glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, &modelMatrix[0][0]);
+    
+        glActiveTexture (GL_TEXTURE0);
+	glBindTexture (GL_TEXTURE_2D, this->texture);
+    glUniform1i (tex_location, 0);
+    
+    glActiveTexture (GL_TEXTURE1);
+	glBindTexture (GL_TEXTURE_2D, this->normalMap);
+    //glUniform1i (normalMapLocation, 1);
+    
     glBindVertexArray(this->getVao());
     glDrawArrays(GL_TRIANGLES, 0, this -> getNumVertices());
     for (int i = 0; i < this -> getVehicle() -> getNumWheels(); i++)

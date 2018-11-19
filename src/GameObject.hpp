@@ -32,6 +32,8 @@ public:
     unsigned int normalMapLoc;
     GLuint shader_programme;
 
+    glm::mat4 model;
+
     GameObject();
     GameObject(const char* path, GLuint shaderprog, btScalar masa, btVector3 startPosition,
          btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld,
@@ -52,7 +54,7 @@ public:
     btRigidBody* getRigidBody();
     int getNumVertices();
     void setModelMatrix(glm::mat4 model);
-    void draw(int matloc);
+    void draw(GLuint model_mat_location);
     void setWorld(btDiscreteDynamicsWorld* world);
     btDiscreteDynamicsWorld* getWorld();
     bool load_texture (GLuint shaderprog, const char* texture_path, const char* normal_path); 

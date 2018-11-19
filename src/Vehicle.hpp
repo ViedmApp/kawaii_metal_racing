@@ -27,8 +27,6 @@ public:
         btQuaternion startRotation,btDiscreteDynamicsWorld* dynamicsWorld);
     ~Vehicle();
 
-    glm::mat4 model;
-
     btVector3 dirr;
     void initialize();
 

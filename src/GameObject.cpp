@@ -365,7 +365,8 @@ btDiscreteDynamicsWorld* GameObject::getWorld()
     return this->world;
 }
 
-void GameObject::draw(int matloc){
+void GameObject::draw(GLuint model_mat_location){
+    /*
     btTransform trans;
     this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
     trans.getOpenGLMatrix(&modelMatrix[0][0]);
@@ -373,6 +374,24 @@ void GameObject::draw(int matloc){
     glUniformMatrix4fv(matloc, 1, GL_FALSE, &this->modelMatrix[0][0]);
     glBindVertexArray(this->getVao());
     glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
+    */
+   btTransform trans;
+    this -> getRigidBody()->getMotionState()->getWorldTransform(trans);
+    trans.getOpenGLMatrix(&model[0][0]);
+    this -> setModelMatrix(this->model);
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, &modelMatrix[0][0]);
+    
+        glActiveTexture (GL_TEXTURE0);
+	glBindTexture (GL_TEXTURE_2D, this->texture);
+    glUniform1i (tex_location, 0);
+    
+    glActiveTexture (GL_TEXTURE1);
+	glBindTexture (GL_TEXTURE_2D, this->normalMap);
+    //glUniform1i (normalMapLocation, 1);
+    
+    glBindVertexArray(this->getVao());
+    glDrawArrays(GL_TRIANGLES, 0, this -> getNumVertices());
+    
 }
 
 bool GameObject::load_texture (GLuint shaderprog, const char* texture_path, const char* normal_path){
