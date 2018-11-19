@@ -83,9 +83,9 @@ void Game::init()
 	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),
 		btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
 	this->piso = new GameObject((char*)"mallas/map_track_flat.obj",shader_programme,btScalar(0),
-		btVector3(-3,-1,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_flat_t.png");
+		btVector3(-3,-5,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_flat_t.png");
 	this->goal = new GameObject((char*)"mallas/map_track_flat_border.obj",shader_programme,btScalar(0),
-		btVector3(-3,-1,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/mars1k.jpg");
+		btVector3(-3,-5,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/mars1k.jpg");
 
 	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
 	this->debug = new GLDebugDrawer();
