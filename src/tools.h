@@ -18,4 +18,7 @@
 #include <bullet/BulletCollision/CollisionShapes/btShapeHull.h>
 #include "gl_utils.h"
 #include "stdarg.h"
+#include <iostream>
+#include <irrKlang.h>
+
 #endif
