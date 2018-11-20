@@ -8,14 +8,14 @@ Mapa::Mapa(btDiscreteDynamicsWorld* dynamicsWorld,GLuint shader_programme)
 }
 Mapa::~Mapa()
 {
-   
+
 }
 
 void Mapa::init()
 {
     N = 24;
     int cont = 0;
-    p1_Start_Position = btVector3(80,1,170);
+    p1_Start_Position = btVector3(-3,1,70);
     p2_Start_Position = btVector3(4,1,70);
     mapa = (GameObject**)malloc((N)*sizeof(GameObject));
     mapa[cont++] = new GameObject((char*)"mallas/map_track_turn.obj",shader_programme,btScalar(0),
@@ -88,15 +88,15 @@ void Mapa::draw(GLuint model_mat_location)
         trans.getOpenGLMatrix(&mapa[i]->model[0][0]);
         mapa[i]->setModelMatrix(mapa[i]->model);
         glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, &mapa[i]->modelMatrix[0][0]);
-        
+
         glActiveTexture (GL_TEXTURE0);
     	glBindTexture (GL_TEXTURE_2D, mapa[i]->texture);
         glUniform1i (mapa[i]->tex_location, 0);
-        
+
         glActiveTexture (GL_TEXTURE1);
     	glBindTexture (GL_TEXTURE_2D, mapa[i]->normalMap);
         //glUniform1i (normalMapLocation, 1);
-        
+
         glBindVertexArray(mapa[i]->getVao());
         glDrawArrays(GL_TRIANGLES, 0, mapa[i]->getNumVertices());
     }

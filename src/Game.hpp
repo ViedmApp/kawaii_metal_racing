@@ -29,9 +29,10 @@ class Game
 		Input* input;
 		GLDebugDrawer* debug;
 		Mapa* mapa;
+		GameObject* piso2;
 
 
-		
+
 
 	public:
 		Game();
