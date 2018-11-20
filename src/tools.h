@@ -20,5 +20,6 @@
 #include "stdarg.h"
 #include <iostream>
 #include <irrKlang.h>
+#define PI 3.14159265359
 
 #endif

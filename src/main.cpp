@@ -15,15 +15,15 @@ int main()
 
 	Game* game = new Game();
 
-	ISoundEngine* engine = createIrrKlangDevice();
+	//ISoundEngine* engine = createIrrKlangDevice();
 
-	if(!engine)	return 0;
+	//if(!engine)	return 0;
 	
-	engine->play2D("multi/7. Run.wav", true);
+	//engine->play2D("multi/7. Run.wav", true);
 	
 	game -> main_loop();
 	
-	engine->drop();
+	//engine->drop();
 
 	return 0;
 }

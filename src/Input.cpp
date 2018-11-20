@@ -41,8 +41,12 @@ void Input::initialiceInput(){
       secondPlayer -> updatePhysics();
   if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
     secondPlayer -> turnRight();
+  if (glfwGetKey(window, GLFW_KEY_K) == GLFW_RELEASE)
+    secondPlayer -> updateTurn();
   if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
     secondPlayer -> turnLeft();
+  if (glfwGetKey(window, GLFW_KEY_H) == GLFW_RELEASE)
+    secondPlayer -> updateTurn();
   if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
     secondPlayer -> reverse();
 

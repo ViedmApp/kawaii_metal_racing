@@ -356,6 +356,8 @@ void GameObject::setModelMatrix(glm::mat4 model){
     this->modelMatrix = model;
 }
 
+
+
 void GameObject::setWorld(btDiscreteDynamicsWorld* world){
     this->world = world;
 }

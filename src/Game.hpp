@@ -4,6 +4,7 @@
 #include "Camera.hpp"
 #include "Vehicle.hpp"
 #include "Input.hpp"
+#include "Mapa.hpp"
 #include "GLDebugDrawer.hpp"
 #define GL_LOG_FILE "log/gl.log"
 #define VERTEX_SHADER_FILE "shaders/test_vs.glsl"
@@ -27,9 +28,7 @@ class Game
 		Vehicle* vehicle2;
 		Input* input;
 		GLDebugDrawer* debug;
-		GameObject* piso;
-		GameObject* borderL;
-		GameObject* borderR;
+		Mapa* mapa;
 
 
 		

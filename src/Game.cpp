@@ -87,17 +87,12 @@ void Game::init()
 	
 	this->dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	this->mapa = new Mapa(dynamicsWorld,shader_programme);
 
 	this->vehicle1 = new Vehicle((char*)"mallas/ae86-t.obj",shader_programme,btScalar(25),
-		btVector3(-3,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/ae86_t2.png");
+		mapa -> getP1StartPosition(),btQuaternion(PI/2,1,0),dynamicsWorld,(char*)"textures/ae86_t2.png");
 	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),
-		btVector3(10,1,10),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
-	this->piso = new GameObject((char*)"mallas/map_track_turn.obj",shader_programme,btScalar(0),
-		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld,(char*)"textures/map_track_turn_t.png");
-	this->borderL = new GameObject((char*)"mallas/map_track_turn_border_T.obj",shader_programme,btScalar(0),
-		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/map_track_flat_border_t.png");
-	this->borderR = new GameObject((char*)"mallas/map_track_turn_border_R.obj",shader_programme,btScalar(0),
-		btVector3(-3,-10,10),btQuaternion(0,1,0,cos(45)),dynamicsWorld, (char*)"textures/map_track_flat_border_t.png");
+		mapa -> getP2StartPosition(),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
 
 	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
 	this->debug = new GLDebugDrawer();
@@ -142,9 +137,7 @@ void Game::main_loop()
         glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view[0][0]);
         vehicle1->draw(model_mat_location);
     	vehicle2->draw(model_mat_location);
-    	piso -> draw(model_mat_location);
-	    borderL -> draw(model_mat_location);
-		borderR -> draw(model_mat_location);
+		mapa -> draw(model_mat_location);
 
         glViewport (g_gl_width/2, 0, g_gl_width/2, g_gl_height);
         projection2 = camara2->getPerspectiva();
@@ -153,15 +146,13 @@ void Game::main_loop()
         glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, &view2[0][0]);
     	vehicle1->draw(model_mat_location);
     	vehicle2->draw(model_mat_location);
-    	piso -> draw(model_mat_location);
-	    borderL->draw(model_mat_location);
-		borderR -> draw(model_mat_location);
+		mapa -> draw(model_mat_location);
 
 	   
-    	debug->setView(&view);
+    	/*debug->setView(&view);
 		debug->setProj(&projection);
 		dynamicsWorld->debugDrawWorld();
-		debug->drawLines();
+		debug->drawLines();*/
 	    
 		
         glfwSwapBuffers(g_window);

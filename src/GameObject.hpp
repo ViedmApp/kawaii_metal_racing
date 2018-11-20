@@ -14,7 +14,6 @@ protected:
     int vertNumber;
     int indicesNumber;
     btRigidBody* rigidBody;
-    glm::mat4 modelMatrix;
 
     GLuint matloc;
 
@@ -31,6 +30,8 @@ public:
     unsigned int normalMap;
     unsigned int normalMapLoc;
     GLuint shader_programme;
+    
+    glm::mat4 modelMatrix;
 
     glm::mat4 model;
 
