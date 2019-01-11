@@ -94,7 +94,7 @@ void Game::init()
 	this->vehicle2 = new Vehicle((char*)"mallas/pika_ae86.obj",shader_programme,btScalar(25),
 		mapa -> getP2StartPosition(),btQuaternion(0,1,0,0),dynamicsWorld,(char*)"textures/pika_ae86_t.png");
 
-	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2);
+	this->input=new Input(g_window,vehicle1,vehicle2,camara,camara2,mapa);
 	this->debug = new GLDebugDrawer();
 
 

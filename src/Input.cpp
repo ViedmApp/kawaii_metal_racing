@@ -1,11 +1,12 @@
 #include "Input.hpp"
-Input::Input(GLFWwindow* window, Vehicle* firstPlayer, Vehicle* secondPlayer, Camera *camara, Camera* camara2)
+Input::Input(GLFWwindow* window, Vehicle* firstPlayer, Vehicle* secondPlayer, Camera *camara, Camera* camara2, Mapa *mapa)
 {
   this->window = window;
   this->firstPlayer = firstPlayer;
   this->secondPlayer = secondPlayer;
   this->camara=camara;
   this -> camara2 = camara2;
+  this -> mapa = mapa;
 }
 
 void Input::initialiceInput(){
@@ -34,6 +35,18 @@ void Input::initialiceInput(){
     firstPlayer -> updateTurn();
   if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     firstPlayer -> reverse();
+  if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    firstPlayer -> reverse();
+  if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS and !trampa)
+  {
+    mapa -> crearTrampa(firstPlayer->getX(),firstPlayer->getY(),firstPlayer->getZ(),1);
+    trampa = true;
+  }
+  else if(glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE and trampa)
+  {
+    trampa = false;
+  }
+
 
   if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
       secondPlayer ->accelerate();
